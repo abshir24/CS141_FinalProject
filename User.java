@@ -29,4 +29,9 @@ public class User {
 		System.out.println("Password "+Arrays.toString(genres) );
 		return " ";
 	}
+	
+	public String getUserName()
+	{
+		return username;
+	}
 }

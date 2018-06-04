@@ -1,20 +1,24 @@
 import java.util.*;
 import java.io.*;
 public class Program {
-
+	
+	public static User[] allUsers;
+	
 	public static void main(String[] args)throws FileNotFoundException
 	{
 		File file = new File("src/practice.txt");
 		
 		Scanner fileScanner = new Scanner(file);
 		
-//		User[] allUsers = new User[countUsersInDB(fileScanner)];
-//		
-//		fileScanner = new Scanner(file);
-//		
-//		allUsers = retrieveUsers(fileScanner,allUsers);
-//		
-//		fileScanner = new Scanner(file);
+		allUsers = new User[countUsersInDB(fileScanner)+1];
+		
+		System.out.println(allUsers.length);
+		
+		fileScanner = new Scanner(file);
+		
+		allUsers = retrieveUsers(fileScanner,allUsers);
+		
+		fileScanner = new Scanner(file);
 		
 		Scanner userinput = new Scanner(System.in);
 		
@@ -22,18 +26,16 @@ public class Program {
 		
 		String answer = userinput.next().toLowerCase();
 		
-		if(answer.charAt(0) == 'y') System.out.print("Cool"); 
+		if(answer.charAt(0) == 'y') {
+			
+		}
 		
 		else {
 			int[]genres; String[] favs = new String[5]; String[] recents = new String[5];
 			
 			System.out.println("Lets create an account for you");
 			
-			System.out.println("Type a username (no spaces)");
-			
-			answer = userinput.next().toLowerCase();
-			
-			String username = answer;
+			String username = promptUserName(userinput);
 			
 			System.out.println("Type a password (no spaces)");
 			
@@ -54,57 +56,44 @@ public class Program {
 				
 				int num = line.nextInt();
 				
-				int temp = num;
-				
-				int idx = 0;
-				
-				while(temp>0)
-				{
-					idx++;
-					
-					temp = temp/10;
-				}
-				
-				genres = new int[idx];
-				
-				idx = 0;
-				
-				while(num>0) {
-					genres[idx++] = num%10;
-					
-					num=num/10;
-				}
-				
+				genres = numToArray(num);
+		
 				reverseArr(genres);
-					
-				
 			}
-	
-		try{
-			  FileWriter fstream = new FileWriter(file,true);
-			  
-			  BufferedWriter out = new BufferedWriter(fstream);
-			  
-			  out.write("\nusername "+username+"\n" + 
-						"password "+password+"\n" + 
-						"genres "+Arrays.toString(genres)+"\n" + 
-						"favorites "+Arrays.toString(favs)+"\n" + 
-						"watched "+Arrays.toString(recents));
-			  out.close();
-			  
-		  }catch (Exception e){
-			  
-			 System.err.println("Error while writing to file: " +
-		          e.getMessage());
-		  }
+			
+			String[] params = new String[] {username,password,Arrays.toString(genres),Arrays.toString(favs),Arrays.toString(recents)};
+			
+			createUserInDb(file,params);
 		
 			User user = new User(username,password,genres,favs,recents);	
+			
+			allUsers[allUsers.length-1] = user;
 			
 			System.out.println("Program over");
 			
 			
 		}
 		
+	}
+	
+	public static void createUserInDb(File file, String[]fields)throws FileNotFoundException
+	{
+		try{
+			  FileWriter fstream = new FileWriter(file,true);
+			  
+			  BufferedWriter out = new BufferedWriter(fstream);
+			  
+			  out.write("\nusername "+fields[0]+"\n" + 
+						"password "+fields[1]+"\n" + 
+						"genres "+fields[2]+"\n" + 
+						"favorites "+fields[3]+"\n" + 
+						"watched "+fields[4]);
+			  out.close();
+			  
+		  }catch (Exception e){
+			 System.err.println("Error while writing to file: " +
+		          e.getMessage());
+		  }
 	}
 	
 	public static void reverseArr(int[]arr)
@@ -117,6 +106,31 @@ public class Program {
 			arr[e--] = temp ;
 		}
 		
+	}
+	
+	public static int[] numToArray(int num)
+	{
+		int temp = num,idx = 0;
+		
+		while(temp>0)
+		{
+			idx++;
+			
+			temp = temp/10;
+		}
+		
+		int[]genres = new int[idx];
+		
+		idx = 0;
+		
+		while(num>0) {
+			
+			genres[idx++] = num%10;
+			
+			num=num/10;
+		}
+		
+		return genres;
 	}
 	
 	public static User[] retrieveUsers(Scanner file,User[] allUsers)
@@ -296,6 +310,31 @@ public class Program {
 			returnArray[i]=list.get(i);
 		
 		return returnArray;
+	}
+	
+	public static boolean findUserInDb(String username)
+	{
+		///problem is here!!!!!!
+		for(int i = 0;i<allUsers.length;i++)
+			if(allUsers[i].getUserName().equals(username)) return true;
+		
+		return false;
+	}
+	
+	public static String promptUserName(Scanner input)
+	{
+		System.out.println("Type a username (no spaces)");
+		
+		String answer = input.next().toLowerCase();
+	
+		if(findUserInDb(answer))
+		{
+			System.out.println("User name is already taken!");
+			promptUserName(input);
+		}
+		System.out.println(answer);
+		return answer;
+		
 	}
 	
 }
