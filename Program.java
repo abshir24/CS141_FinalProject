@@ -4,38 +4,86 @@ public class Program {
 	
 	public static User[] allUsers;
 	
+	public static Movie[] allMovies = new Movie[100];
+	
 	public static void main(String[] args)throws FileNotFoundException
 	{
-		File file = new File("src/practice.txt");
+		File userFile = new File("src/practice.txt");
 		
-		Scanner fileScanner = new Scanner(file);
+		File moviesFile = new File("src/movies.txt");
 		
-		allUsers = new User[countUsersInDB(fileScanner)+1];
+		Scanner fileScanner = new Scanner(userFile);
 		
-		System.out.println(allUsers.length);
+		allUsers = new User[countUsersInDB(fileScanner)+1]; 
 		
-		fileScanner = new Scanner(file);
+		fileScanner = new Scanner(userFile);
 		
 		allUsers = retrieveUsers(fileScanner,allUsers);
 		
-		Scanner userinput = new Scanner(System.in);
+		fileScanner = new Scanner(moviesFile);
 		
-		System.out.println("Do you already have an account with us?");
+		allMovies = retrieveMovies(fileScanner,allMovies);
 		
-		String answer = userinput.next().toLowerCase();
+//		Scanner userinput = new Scanner(System.in);
+//		
+//		System.out.println("Do you already have an account with us?");
+//		
+//		String answer = userinput.next().toLowerCase();
+//		
+//		if(answer.charAt(0) == 'y') {
+//			//If there answer begins with y run login
+//			Login(userinput);
+//			
+//		}
+//		
+//		else {
+//			//If there answer begins with anything but y run reg
+//			Register(userinput);
+//		}
 		
-		if(answer.charAt(0) == 'y') {
-			//If there answer begins with y run login
+	}
+	
+	public static Movie[] retrieveMovies(Scanner file,Movie[] allMovies)
+	{
+		int idx=0,rating=0;
+		
+		String title = "", genre = "";
+		
+		while(file.hasNextLine())
+		{
+			String line = file.nextLine();
 			
-			Login(userinput);
+			if(line.length()==0) continue;
 			
+			Scanner lineScan = new Scanner(line);
+			
+			while(lineScan.hasNext())
+			{
+				genre = lineScan.next();
+				
+				if(genre.contains("a")) genre = "Action";
+				
+				else if (genre.contains("h")) genre = "Horror";
+				
+				else if (genre.contains("c")) genre = "Childrens";
+				
+				else genre = "Romance";
+			}
+			
+			int start = line.indexOf("[") + 1, stop = line.indexOf("]");
+			
+			title = line.substring(start,stop);
+			
+			String rate = "" + line.charAt((line.length()-1));
+			
+			rating = Integer.parseInt(rate);
+			
+			Movie newMovie = new Movie(title,genre,rating);
+			
+			allMovies[idx++] = newMovie;
 		}
 		
-		else {
-			//If there answer begins with anything but y run register
-			Register(userinput);
-		}
-		
+		return allMovies;
 	}
 	
 	
@@ -86,6 +134,7 @@ public class Program {
 		
 		System.out.println("Registration Successful");
 	}
+	
 	//Writes user content to our database file
 	public static void createUserInDb(File file, String[]fields)throws FileNotFoundException
 	{
@@ -220,6 +269,7 @@ public class Program {
 		
 		return allUsers;
 	}
+	
 	
 	//counts the number of users in the DB each user has 5 fields associated with them
 	public static int countUsersInDB(Scanner file)
@@ -478,5 +528,7 @@ public class Program {
 		
 		return genres;
 	}
+	
+	
 }
 
