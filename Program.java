@@ -18,8 +18,6 @@ public class Program {
 		
 		allUsers = retrieveUsers(fileScanner,allUsers);
 		
-		fileScanner = new Scanner(file);
-		
 		Scanner userinput = new Scanner(System.in);
 		
 		System.out.println("Do you already have an account with us?");
@@ -27,50 +25,67 @@ public class Program {
 		String answer = userinput.next().toLowerCase();
 		
 		if(answer.charAt(0) == 'y') {
-			String username = promptUserNameLogin(userinput,0);
+			//If there answer begins with y run login
 			
-			if(username.contains("Error")) System.out.println(username);
-			
-			else {
-				
-				String password = promptPasswordLogin(userinput,username);
-				
-				if(password.contains("Error")) System.out.println(password);
-				
-				else {
-					System.out.println("Login was successful!");
-					User loggedInUser = retrieveUserFromDb(username);
-				}
-				
-			}
+			Login(userinput);
 			
 		}
 		
 		else {
-			int[]genres; String[] favs = new String[5]; String[] recents = new String[5];
-			
-			System.out.println("Lets create an account for you");
-			
-			String username = promptUserName(userinput);
-			
-			String password = promptPassword(userinput);
-			
-			genres = promptGenre(userinput);
-			
-			String[] params = new String[] {username,password,Arrays.toString(genres),Arrays.toString(favs),Arrays.toString(recents)};
-			
-			createUserInDb(file,params);
-		
-			User loggedInUser = new User(username,password,genres,favs,recents);	
-			
-			allUsers[allUsers.length-1] = loggedInUser;
-			
-			System.out.println("Program over");
-			
+			//If there answer begins with anything but y run register
+			Register(userinput);
 		}
 		
 	}
 	
+	
+	//Login function
+	
+	public static void Login(Scanner userinput)
+	{
+		String username = promptUserNameLogin(userinput,0);
+		
+		if(username.contains("Error")) System.out.println(username);
+		
+		else {
+			String password = promptPasswordLogin(userinput,username);
+			
+			if(password.contains("Error")) System.out.println(password);
+			
+			else {
+				System.out.println("Login was successful!");
+				
+				User loggedInUser = retrieveUserFromDb(username);
+			}
+			
+		}
+	}
+	
+	
+	public static void Register(Scanner userinput)throws FileNotFoundException
+	{
+		File file = new File("src/practice.txt");
+		
+		int[]genres; String[] favs = new String[5]; String[] recents = new String[5];
+		
+		System.out.println("Lets create an account for you");
+		
+		String username = promptUserName(userinput);
+		
+		String password = promptPassword(userinput);
+		
+		genres = promptGenre(userinput);
+		
+		String[] params = new String[] {username,password,Arrays.toString(genres),Arrays.toString(favs),Arrays.toString(recents)};
+		
+		createUserInDb(file,params);
+	
+		User loggedInUser = new User(username,password,genres,favs,recents);	
+		
+		allUsers[allUsers.length-1] = loggedInUser;
+		
+		System.out.println("Registration Successful");
+	}
 	//Writes user content to our database file
 	public static void createUserInDb(File file, String[]fields)throws FileNotFoundException
 	{
