@@ -22,12 +22,7 @@ public class User {
 	
 	public String toString()
 	{
-		System.out.println("Name "+username );
-		System.out.println("Password "+password );
-		System.out.println("Favorites "+Arrays.toString(favorites) );
-		System.out.println("Password "+Arrays.toString(recents) );
-		System.out.println("Password "+Arrays.toString(genres) );
-		return " ";
+		return username+" password:["+password+"] favorites:" + Arrays.toString(favorites)+" recents:" + Arrays.toString(recents)+" genre:"+Arrays.toString(genres);
 	}
 	
 	public String getUserName()

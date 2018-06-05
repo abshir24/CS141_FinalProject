@@ -1,28 +1,36 @@
 import java.util.*;
 import java.io.*;
 public class Program {
+	private static User loggedUser;
 	
-	public static User[] allUsers;
+	private static User[] allUsers;
 	
-	public static Movie[] allMovies = new Movie[100];
+	private static Movie[] allMovies = new Movie[100];
 	
 	public static void main(String[] args)throws FileNotFoundException
 	{
-		File userFile = new File("src/practice.txt");
 		
-		File moviesFile = new File("src/movies.txt");
+		Gui gui = new Gui();
 		
+		gui.ActivateHome();
+		
+//		File userFile = new File("src/practice.txt");
+//		
+//		File moviesFile = new File("src/movies.txt");
+//		
 		Scanner fileScanner = new Scanner(userFile);
-		
-		allUsers = new User[countUsersInDB(fileScanner)+1]; 
-		
-		fileScanner = new Scanner(userFile);
-		
-		allUsers = retrieveUsers(fileScanner,allUsers);
-		
+//		
+//		allUsers = new User[countUsersInDB(fileScanner)+1]; 
+//		
+//		fileScanner = new Scanner(userFile);
+//		
+//		allUsers = retrieveUsers(fileScanner,allUsers);
+//		
 		fileScanner = new Scanner(moviesFile);
 		
-		allMovies = retrieveMovies(fileScanner,allMovies);
+		allMovies = retrieveMoviesFromDB(fileScanner,allMovies);
+//		
+//		displayAllMovies();
 		
 //		Scanner userinput = new Scanner(System.in);
 //		
@@ -43,7 +51,24 @@ public class Program {
 		
 	}
 	
-	public static Movie[] retrieveMovies(Scanner file,Movie[] allMovies)
+	public static User retrieveUser()
+	{
+		return loggedUser;
+	}
+	
+	public static Movie[] retrieveMovies()
+	{
+		return allMovies;
+	}
+	
+	
+//	public static void displayAllMovies()
+//	{
+//		for(int i = 0;i<allMovies.length;i++)
+//			System.out.println(allMovies[i].toString());
+//	}
+//	
+	public static Movie[] retrieveMoviesFromDB(Scanner file,Movie[] allMovies)
 	{
 		int idx=0,rating=0;
 		
@@ -57,19 +82,16 @@ public class Program {
 			
 			Scanner lineScan = new Scanner(line);
 			
-			while(lineScan.hasNext())
-			{
-				genre = lineScan.next();
-				
-				if(genre.contains("a")) genre = "Action";
-				
-				else if (genre.contains("h")) genre = "Horror";
-				
-				else if (genre.contains("c")) genre = "Childrens";
-				
-				else genre = "Romance";
-			}
+			genre = lineScan.next();
 			
+			if(genre.contains("a")) genre = "Action";
+			
+			else if (genre.contains("h")) genre = "Horror";
+			
+			else if (genre.contains("c")) genre = "Childrens";
+			
+			else genre = "Romance";
+		
 			int start = line.indexOf("[") + 1, stop = line.indexOf("]");
 			
 			title = line.substring(start,stop);
@@ -81,6 +103,7 @@ public class Program {
 			Movie newMovie = new Movie(title,genre,rating);
 			
 			allMovies[idx++] = newMovie;
+	
 		}
 		
 		return allMovies;
@@ -103,7 +126,7 @@ public class Program {
 			else {
 				System.out.println("Login was successful!");
 				
-				User loggedInUser = retrieveUserFromDb(username);
+				loggedUser = retrieveUserFromDb(username);
 			}
 			
 		}
@@ -128,9 +151,9 @@ public class Program {
 		
 		createUserInDb(file,params);
 	
-		User loggedInUser = new User(username,password,genres,favs,recents);	
+		loggedUser = new User(username,password,genres,favs,recents);	
 		
-		allUsers[allUsers.length-1] = loggedInUser;
+		allUsers[allUsers.length-1] = loggedUser;
 		
 		System.out.println("Registration Successful");
 	}

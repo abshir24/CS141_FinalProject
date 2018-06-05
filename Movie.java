@@ -16,13 +16,7 @@ public class Movie {
 	
 	public String toString()
 	{
-		System.out.printf("Title: %s \n", title);
-		
-		System.out.printf("Title: %d \n", rating);
-		
-		System.out.printf("Title: %s \n", genre);
-		
-		return " ";
+		return title+" ["+genre+"] rating = "+rating;
 	}
 	
 }
