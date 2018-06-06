@@ -47,17 +47,17 @@ public class User {
 		
 		int idx=0;	
 		
-		if(favorites[0].equals("null")) return favorites;
+		if(favorites[0].contains("null")) return favorites;
 		
 		for(int i = 0;i<favorites.length;i++)
-			if(!favorites[i].equals("null"))idx++ ;
+			if(!favorites[i].contains("null"))idx++;
 			
 		returnArr=new String[idx];
 		
 		idx=0;
 		
 		for(int i=0;i<favorites.length;i++)
-			if(!favorites[i].equals("null"))returnArr[idx++] = favorites[i];
+			if(!favorites[i].contains("null")) returnArr[idx++] = favorites[i];
 		
 		return returnArr;
 	}
@@ -68,17 +68,17 @@ public class User {
 		
 		int idx=0;	
 		
-		if(recents[0].equals("null")) return recents;
+		if(recents[0].contains("null")) return recents;
 		
 		for(int i = 0;i<recents.length;i++)
-			if(!recents[i].equals("null")) idx++;
+			if(!recents[i].contains("null")) idx++;
 			
 		returnArr=new String[idx];
 		
 		idx=0;
 		
 		for(int i=0;i<recents.length;i++)
-			if(!recents[i].equals("null"))returnArr[idx++] = recents[i];
+			if(!recents[i].contains("null"))returnArr[idx++] = recents[i];
 		
 		
 		return returnArr;

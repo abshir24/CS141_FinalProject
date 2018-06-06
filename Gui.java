@@ -21,6 +21,9 @@ public class Gui{
 	private Button GenreSelection = new Button("Back to Genre Selection");
 	private User user;
 	private Movie[] allMovies;
+	private JButton[] temp;
+	String currentMovie;
+	int counter;
 	
 	public Gui()
 	{	
@@ -55,6 +58,8 @@ public class Gui{
 		RFU.addActionListener(handler);
 		
 		RMN = addButton("Random Movie Night",290,frame);
+		
+		RMN.addActionListener(handler);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -159,9 +164,15 @@ public class Gui{
 		
 		JLabel caption;
 		
-		if(favorites[0] == null){
+		if(favorites[0].contains("null")){
 			
 			caption= new JLabel("You don't have any movies in your favorites list");
+			
+			Back.setPreferredSize(new Dimension(150,150));
+			
+			Back.addActionListener(handler);
+			
+			frame.add(Back);
 			
 			frame.add(caption);
 			
@@ -172,15 +183,42 @@ public class Gui{
 			frame.setVisible(true);
 		}else{
 			
-			Button[] movies = createButtonArray(favorites);
+			JButton[] movies = createButtonArray(favorites);
 			
-			Button button;
+			temp = movies;
+			
+			JButton button;
 			
 			for(int i = 0;i<movies.length;i++) {
 				
 				button = movies[i];
+				
+				currentMovie = button.getText();
+				
 				button.setPreferredSize(new Dimension(200,150));
-				frame.add(button);
+				
+				button.addActionListener(
+				  new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+//				      System.out.println(currentMovie);
+				    }
+				  }
+				);
+				
+				counter = i;
+								
+				currentMovie = movies[i].getText();
+				
+				movies[i].setPreferredSize(new Dimension(200,150));
+				
+				temp[counter].addActionListener(
+				  new ActionListener() {
+				    public void actionPerformed(ActionEvent e) {
+				    	System.out.println(temp[counter].getText());
+				    }
+				  }
+				);
+				frame.add(movies[i]);
 			}
 			
 			Back.setPreferredSize(new Dimension(150,150));
@@ -213,7 +251,7 @@ public class Gui{
 		
 		JLabel caption;
 		
-		if(recentlyWatched[0] == null){
+		if(recentlyWatched[0].contains("null")){
 		
 			caption= new JLabel("You haven't watched any movies yet");
 			
@@ -232,9 +270,9 @@ public class Gui{
 			frame.setVisible(true);
 		}else{
 			
-			Button[] movies = createButtonArray(recentlyWatched);
+			JButton[] movies = createButtonArray(recentlyWatched);
 			
-			Button button;
+			JButton button;
 			
 			for(int i = 0;i<movies.length;i++) {
 				
@@ -284,9 +322,9 @@ public class Gui{
 		}
 		
 		
-		Button[] movies = createButtonArray(displayArray);
+		JButton[] movies = createButtonArray(displayArray);
 		
-		Button button;
+		JButton button;
 		
 		for(int i = 0;i<movies.length;i++) {
 			
@@ -314,6 +352,12 @@ public class Gui{
 	}
 	
 	public void ActivateRFU() {
+		ButtonHandler handler = new ButtonHandler();
+		
+		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.setLayout(new FlowLayout());
+		
 		String[] genres = genresToString();
 		
 		String[] displayArray = new String[16];
@@ -375,13 +419,70 @@ public class Gui{
 				
 		}
 		
-		System.out.println(Arrays.toString(displayArray));
+		JButton[] movies = createButtonArray(displayArray);
 		
+		JButton button;
+		
+		for(int i = 0;i<movies.length;i++) {
+			
+			button = movies[i];
+			
+			button.setPreferredSize(new Dimension(200,150));
+			
+			frame.add(button);
+		}
+		
+		Back.setPreferredSize(new Dimension(150,150));
+		
+		Back.addActionListener(handler);
+				
+		frame.add(Back);
+		 
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		makeFrameFullSize(frame);
+		
+		frame.setVisible(true);
+		
+		return;
+		
+	}
+	
+	public void ActivateRMN() {
+		ButtonHandler handler = new ButtonHandler();
+		
+		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.setLayout(new FlowLayout());
+		
+		Random rand = new Random();
+		
+		String title = allMovies[rand.nextInt(100)+1].retrieveTitle();
+		
+		Button button = new Button(title);
+		
+		button.setPreferredSize(new Dimension(300,300));
+		
+		frame.add(button);
+		
+		Back.setPreferredSize(new Dimension(150,150));
+		
+		Back.addActionListener(handler);
+				
+		frame.add(Back);
+		 
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		makeFrameFullSize(frame);
+		
+		frame.setVisible(true);
+		
+		return;
 		
 	}
 	
 	
-//	public void addMovies
+
 	public void displayMovies(String[] displayArray,int currentIdx,String genre,int endIdx,int startIdx)
 	{
 		while(currentIdx<endIdx)
@@ -410,13 +511,12 @@ public class Gui{
 		} 
 	}
 	
-	public Button[] createButtonArray(String[] input) {
+	public JButton[] createButtonArray(String[] input) {
 		
-		Button[] Buttons = new Button[input.length];
+		JButton[] Buttons = new JButton[input.length];
 		
         for(int i = 0; i < input.length; i++)
-            Buttons[i] = new Button(input[i]);
-        
+            Buttons[i] = new JButton(input[i]);
         
         return Buttons;
     }
@@ -461,12 +561,7 @@ public class Gui{
 			else if(event.getSource()==Horror) ActivateGenre("Horror");
 			else if(event.getSource()==Romance) ActivateGenre("Romance");
 			else if(event.getSource()==RFU) ActivateRFU();
-//			else if(event.getSource()==RBU) ActivateRBU();
-//			else if(event.getSource()==RMN) ActivateRMN();
-//			else if(event.getSource()==Action) ActivateAction();
-//			else if(event.getSource()==Romance) ActivateRomance();
-//			else if(event.getSource()==Childrens) ActivateChildrens();
-//			else ActivateHorror();
+			else if(event.getSource()==RMN) ActivateRMN();
 		}
 	}
 }

@@ -12,12 +12,14 @@ public class Program {
 	{
 		int cool = User.returnIdx();
 		
+		Gui gui;
+		
 		File userFile = new File("src/practice.txt");
 		
 		File moviesFile = new File("src/movies.txt");
-//		
+	
 		Scanner fileScanner = new Scanner(userFile);
-//		
+	
 		allUsers = new User[countUsersInDB(fileScanner)+1]; 
 		
 		fileScanner = new Scanner(userFile);
@@ -25,40 +27,42 @@ public class Program {
 		allUsers = retrieveUsers(fileScanner,allUsers);
 		
 		System.out.println("Length "+ allUsers.length);
-//		
+
 		fileScanner = new Scanner(moviesFile);
 		
 		allMovies = retrieveMoviesFromDB(fileScanner,allMovies);
 		
-		Gui gui = new Gui();
+		Scanner userinput = new Scanner(System.in);
 		
-		gui.ActivateHome();
-//		
-//		displayAllMovies();
+		System.out.println("Do you already have an account with us?");
 		
-//		Scanner userinput = new Scanner(System.in);
-//		
-//		System.out.println("Do you already have an account with us?");
-//		
-//		String answer = userinput.next().toLowerCase();
-//		
-//		if(answer.charAt(0) == 'y') {
-//			//If there answer begins with y run login
-//			Login(userinput);
-//			
-//		}
-//		
-//		else {
-//			//If there answer begins with anything but y run reg
-//			Register(userinput);
-//		}
+		String answer = userinput.next().toLowerCase();
+		
+		if(answer.charAt(0) == 'y') {
+			//If there answer begins with y run login
+			
+			Login(userinput);
+			
+			gui = new Gui();
+			
+			gui.ActivateHome();
+			
+		}
+		
+		else {
+			//If there answer begins with anything but y run reg
+			
+			Register(userinput);
+			
+			gui = new Gui();
+			
+			gui.ActivateHome();
+		}
 		
 	}
 	
 	public static User retrieveUser()
 	{
-		loggedUser = retrieveUserFromDb("abshir24");
-		
 		return loggedUser;
 	}
 	
@@ -236,12 +240,20 @@ public class Program {
 		
 		String[]watched = new String[5];
 		
+		String word;
+		
+		boolean addSpace = false;
+		
+		
+		
 		ArrayList<Integer> genreCopy = new ArrayList<Integer>();
 		
 		while(file.hasNextLine())
 		{
 	
-			Scanner line = new Scanner(file.nextLine());
+			String data = file.nextLine();
+			
+			Scanner line = new Scanner(data);
 			
 			if(!line.hasNext()) continue;
 			
@@ -257,29 +269,22 @@ public class Program {
 				
 				while(line.hasNext()) arrayString+=line.next(); 
 				
-				arrayString=removeBrackets(arrayString);
+				arrayString=removeBrackets(arrayString,0);
 				
 				genreCopy = stringToIntArray(arrayString,countNums(arrayString));
 			
 			}
 			else if(row.equals("favorites")){
 				
-				while(line.hasNext()) arrayString+=line.next();
-				
-				arrayString = removeBrackets(arrayString);
+				arrayString = removeBrackets(data,10);
 				
 				favorites = arrayString.split(",");
-		
-				
 			}	
 			else{
-				
-				while(line.hasNext()) arrayString+=line.next();
-				
-				arrayString = removeBrackets(arrayString);
+				arrayString = removeBrackets(data,9);
 				
 				watched = arrayString.split(",");
-				
+		
 				int[] genres = copyList(genreCopy);
 				
 				User newUser = new User(username,password,genres,favorites,watched);
@@ -326,7 +331,7 @@ public class Program {
 	}
 	
 	//removes brackets from string to make the process of converting string to array much easier
-	public static String removeBrackets(String str)
+	public static String removeBrackets(String str,int start)
 	{
 		String returnStr = "";
 		
@@ -350,7 +355,7 @@ public class Program {
 		
 //	if the input is a string array
 		
-		for(int i=0;i<str.length();i++)
+		for(int i=start;i<str.length();i++)
 			
 			if(str.charAt(i)!='[' && str.charAt(i)!=']' )
 				
