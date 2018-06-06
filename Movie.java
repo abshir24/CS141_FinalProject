@@ -19,4 +19,14 @@ public class Movie {
 		return title+" ["+genre+"] rating = "+rating;
 	}
 	
+	public String retrieveTitle()
+	{
+		return title;
+	}
+	
+	public String retrieveGenre()
+	{
+		return genre;
+	}
+	
 }

@@ -7,28 +7,32 @@ public class Program {
 	
 	private static Movie[] allMovies = new Movie[100];
 	
+	
 	public static void main(String[] args)throws FileNotFoundException
 	{
+		int cool = User.returnIdx();
 		
-		Gui gui = new Gui();
+		File userFile = new File("src/practice.txt");
 		
-		gui.ActivateHome();
-		
-//		File userFile = new File("src/practice.txt");
-//		
-//		File moviesFile = new File("src/movies.txt");
+		File moviesFile = new File("src/movies.txt");
 //		
 		Scanner fileScanner = new Scanner(userFile);
 //		
-//		allUsers = new User[countUsersInDB(fileScanner)+1]; 
-//		
-//		fileScanner = new Scanner(userFile);
-//		
-//		allUsers = retrieveUsers(fileScanner,allUsers);
+		allUsers = new User[countUsersInDB(fileScanner)+1]; 
+		
+		fileScanner = new Scanner(userFile);
+		
+		allUsers = retrieveUsers(fileScanner,allUsers);
+		
+		System.out.println("Length "+ allUsers.length);
 //		
 		fileScanner = new Scanner(moviesFile);
 		
 		allMovies = retrieveMoviesFromDB(fileScanner,allMovies);
+		
+		Gui gui = new Gui();
+		
+		gui.ActivateHome();
 //		
 //		displayAllMovies();
 		
@@ -53,6 +57,8 @@ public class Program {
 	
 	public static User retrieveUser()
 	{
+		loggedUser = retrieveUserFromDb("abshir24");
+		
 		return loggedUser;
 	}
 	
@@ -417,6 +423,7 @@ public class Program {
 	
 	public static User retrieveUserFromDb(String username)
 	{
+		
 		String[] dummy1 = new String[5];
 		
 		String[] dummy2 = new String[5];
@@ -424,13 +431,11 @@ public class Program {
 		int[] dummy3 = new int[4];
 		
 		//Placeholder code will not work without it.	
-		User user = new User("null","null",dummy3,dummy2,dummy1);
 		
-		for(int i = 0;i<allUsers.length-1;i++)
-			if(allUsers[i].getUserName().equals(username)) 
-				user = allUsers[i];
+		for(int i = 0;i<allUsers.length-1;i++) 
+			if(allUsers[i].getUserName().equals(username)) return allUsers[i];
 		
-		return user;
+		return new User("Null","Null",dummy3,dummy2,dummy1);
 	}
 	
 	
