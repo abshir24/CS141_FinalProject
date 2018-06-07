@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.Arrays;
 
 public class ChangeLineInFile {
 
@@ -72,6 +73,7 @@ private static String[] turnFileIntoArrayOfStrings(String content, int lines) {
         index++;
 
     }
+    
 
     return array;
 }
@@ -94,7 +96,7 @@ private static String editLineInContent(String content, String newLine, int line
     for (int i = 0; i < lineNumber; i++) {
         content += lines[i];
     }
-
+ 
     return content;
 }
 

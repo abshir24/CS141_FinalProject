@@ -1,20 +1,17 @@
 import java.util.*;
 import java.awt.event.ActionListener;
 import java.io.*;
-public class Program extends FileNotFoundException{
+public class Program{
 	private static User loggedUser;
 	
 	private static User[] allUsers;
 	
 	private static Movie[] allMovies = new Movie[100];
 	
-
-	
-	private static Scanner fileScan = new Scanner(new File("src/practice.txt"));
+	private static Gui gui;
 	
 	public static void main(String[] args)throws FileNotFoundException
 	{
-		Gui gui;
 		
 		File userFile = new File("src/practice.txt");
 		
@@ -27,10 +24,6 @@ public class Program extends FileNotFoundException{
 		fileScanner = new Scanner(userFile);
 		
 		allUsers = retrieveUsers(fileScanner,allUsers);
-		
-		int cool = findUserInTxt("abshir24");
-		
-		System.out.println(findLineInTxt("favorites",cool));
 
 		fileScanner = new Scanner(moviesFile);
 		
@@ -46,10 +39,7 @@ public class Program extends FileNotFoundException{
 			//If there answer begins with y run login
 			
 			Login(userinput);
-			
-			gui = new Gui();
-			
-			gui.ActivateHome();
+	
 			
 		}
 		
@@ -57,13 +47,12 @@ public class Program extends FileNotFoundException{
 			//If there answer begins with anything but y run reg
 			
 			Register(userinput);
-			
-			gui = new Gui();
-			
-			gui.ActivateHome();
+		
 		}
+	
 		
 	}
+	
 	
 	public static User retrieveUser()
 	{
@@ -75,13 +64,6 @@ public class Program extends FileNotFoundException{
 		return allMovies;
 	}
 	
-	
-//	public static void displayAllMovies()
-//	{
-//		for(int i = 0;i<allMovies.length;i++)
-//			System.out.println(allMovies[i].toString());
-//	}
-//	
 	public static Movie[] retrieveMoviesFromDB(Scanner file,Movie[] allMovies)
 	{
 		int idx=0,rating=0;
@@ -141,6 +123,11 @@ public class Program extends FileNotFoundException{
 				System.out.println("Login was successful!");
 				
 				loggedUser = retrieveUserFromDb(username);
+				
+				gui = new Gui();
+				
+				gui.ActivateHome();
+				
 			}
 			
 		}
@@ -149,6 +136,7 @@ public class Program extends FileNotFoundException{
 	
 	public static void Register(Scanner userinput)throws FileNotFoundException
 	{
+		
 		File file = new File("src/practice.txt");
 		
 		int[]genres; String[] favs = new String[5]; String[] recents = new String[5];
@@ -170,6 +158,11 @@ public class Program extends FileNotFoundException{
 		allUsers[allUsers.length-1] = loggedUser;
 		
 		System.out.println("Registration Successful");
+		
+		gui = new Gui();
+		
+		gui.ActivateHome();
+		
 	}
 	
 	//Writes user content to our database file
@@ -193,59 +186,73 @@ public class Program extends FileNotFoundException{
 		  }
 	}
 	
-	public static int findUserInTxt(String input) throws FileNotFoundException
+	public static int findUserInTxt(String input) 
 	{
-		Scanner file = new Scanner( new File("src/practice.txt"));
-		int count = 0;
-		while(file.hasNextLine())
-		{
-			count++;
-			
-			String data = file.nextLine();
-			
-			Scanner line = new Scanner(data);
-			
-			if(!line.hasNext()) continue;
-			
-			String row = line.next();
-			
-			if(row.equals(input)) return count;
-			
-			String arrayString = "";
-			
-			if(data.contains(input))  return count;
-			
-		}
 		
-		file = new Scanner( new File("src/practice.txt"));
+		int count = 0;
+		
+		try {
+			File userFile = new File("src/practice.txt");
+			
+			Scanner file = new Scanner(userFile);
+			
+			while(file.hasNextLine())
+			{
+				count++;
+				
+				String data = file.nextLine();
+				
+				Scanner line = new Scanner(data);
+				
+				if(!line.hasNext()) continue;
+				
+				String row = line.next();
+				
+				String arrayString = "";
+				
+				if(data.contains(input))  return count;
+				
+			}
+	    } catch (FileNotFoundException e) {
+	        throw new AssertionError("The file is expected to exist (was supposed to be verified earlier)");
+	    }
+		
 		
 		return count;
 	}
 	
-	public static int findLineInTxt(String input,int start) throws FileNotFoundException
+	public static int findLineInTxt(String input,int start)
 	{
-		Scanner file = new Scanner( new File("src/practice.txt"));
 		int count = 0; 
-		while(file.hasNextLine())
-		{
-			count++;
-			
-			String data = file.nextLine();
-			
-			Scanner line = new Scanner(data);
-			
-			if(!line.hasNext()) continue;
-			
-			String row = line.next();
-			
-			if(count>start)
-			{
-				if(row.equals(input)) return count;
-			}
-			
-		}
 		
-		file = new Scanner( new File("src/practice.txt"));
+		try {
+			File userFile = new File("src/practice.txt");
+			
+			Scanner file = new Scanner(userFile);
+			
+			while(file.hasNextLine())
+			{
+				count++;
+				
+				String data = file.nextLine();
+				
+				Scanner line = new Scanner(data);
+				
+				if(!line.hasNext()) continue;
+				
+				String row = line.next();
+				
+				if(count>start)
+				{
+					
+					if(row.equals(input)) return count;
+					
+				}
+				
+			}
+	    } catch (FileNotFoundException e) {
+	        throw new AssertionError("The file is expected to exist (was supposed to be verified earlier)");
+	    }
 		
 		return count;
 	}
@@ -622,6 +629,18 @@ public class Program extends FileNotFoundException{
 		return genres;
 	}
 	
+	public static String removeFrontSpaces(String str)
+	{
+		String returnString = "";
+		
+		int idx = 0;
+		
+		while(str.charAt(idx)==' ') idx++;
+		
+		for(int i = idx;i<str.length();i++) returnString+=str.charAt(i);
+		
+		return returnString;
+	}
 	
 }
 

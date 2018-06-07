@@ -18,12 +18,15 @@ public class Gui{
 	private JButton Childrens;
 	private JButton Romance;
 	private Button Back = new Button("Back to Home");
+	private Button addToFavs = new Button("Add To Favorites");
 	private Button GenreSelection = new Button("Back to Genre Selection");
 	private User user;
 	private Movie[] allMovies;
 	private JButton[] movies;
 	private JButton randomMovie;
 	private String currentMovie;
+	
+	private int count = 0;
 
 	public Gui()
 	{	
@@ -34,30 +37,39 @@ public class Gui{
 	
 	public void ActivateHome()
 	{
-		
 		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.getContentPane().setBackground( Color.GREEN );
 		
 		ButtonHandler handler = new ButtonHandler();
 		
 		frame.setLayout(new FlowLayout());
 		
-		previouslyWatched = addButton("Previously Watched",290,frame);
+		frame.getContentPane().setBackground( Color.GREEN );
+		
+		JLabel title = new JLabel("Welcome to Gator Streaming " + user.getUserName() +"!");
+		
+		title.setFont(new Font("Serif", Font.PLAIN, 75));
+		
+		frame.add(title);
+		
+		previouslyWatched = addButton("Previously Watched",350,frame);
 		
 		previouslyWatched.addActionListener(handler);
 		
-		selectByGenre = addButton("Select Movies By Genre",290,frame);
+		selectByGenre = addButton("Select Movies By Genre",350,frame);
 		
 		selectByGenre.addActionListener(handler);
 		
-		favorites = addButton("Favorites",290,frame);
+		favorites = addButton("Favorites",350,frame);
 		
 		favorites.addActionListener(handler);
 		
-		RFU = addButton("Recommended for you",290,frame);
+		RFU = addButton("Recommended for you",350,frame);
 		
 		RFU.addActionListener(handler);
 		
-		RMN = addButton("Random Movie Night",290,frame);
+		RMN = addButton("Random Movie Night",350,frame);
 		
 		RMN.addActionListener(handler);
 		
@@ -70,19 +82,19 @@ public class Gui{
 		return;
 	}
 	
-	public void ActivateWatchMovie(String movieTitle) throws FileNotFoundException
+	public void ActivateWatchMovie(String movieTitle)
 	{
+		JFrame frame = new JFrame("Gator Streaming");
+		
 		currentMovie = movieTitle;
 		
 		Movie movie = findMovie(movieTitle);
 		
-		user.addMovieToDb(movieTitle,"recents");
+		user.addMovieToDb(movieTitle,"watched");
 		
 		String fullTitle = "Now Watching: " + movie.retrieveTitle() + "( " + movie.retrieveGenre() +" )";
 		
 		ButtonHandler handler = new ButtonHandler();
-		
-		JFrame frame = new JFrame("Gator Streaming");
 		
 		frame.setLayout(new FlowLayout());
 		
@@ -90,17 +102,23 @@ public class Gui{
 		
 		JLabel title = new JLabel(fullTitle);
 		
-		title.setFont(new Font("Serif", Font.PLAIN, 75));
+		title.setFont(new Font("Serif", Font.PLAIN, 60));
 		
 		title.setForeground(Color.WHITE);
 		
 		frame.add(title);
 		
-		Back.setPreferredSize(new Dimension(150,150));
+		Back.setPreferredSize(new Dimension(800,100));
 		
 		Back.addActionListener(handler);
 		
+		addToFavs.setPreferredSize(new Dimension(800,100));
+		
+		addToFavs.addActionListener(handler);
+		
 		frame.add(Back);
+		
+		frame.add(addToFavs);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -111,15 +129,13 @@ public class Gui{
 		
 	}
 	
-	
-	
-	
-	
 	public void ActivateGenreSelection()
 	{
-		ButtonHandler handler = new ButtonHandler();
-		
 		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.getContentPane().setBackground( Color.GREEN );
+		
+		ButtonHandler handler = new ButtonHandler();
 		
 		frame.setLayout(new FlowLayout());
 		
@@ -162,52 +178,21 @@ public class Gui{
 		return;
 	}
 	
-	public JButton addButton(Icon img,String imgTitle,JFrame frame)
-	{	
-		activeButton = new JButton(img);
-		
-		buttonLabel = new JLabel(imgTitle);
-		
-		activeButton.setPreferredSize(new Dimension(290, 290));
-		
-		frame.add(buttonLabel);
-		
-		frame.add(activeButton);
-		
-		return activeButton;
-	}
-	
-	public JButton addButton(String caption,int dimension,JFrame frame)
-	{
-		activeButton = new JButton(caption);
-		
-		activeButton.setPreferredSize(new Dimension(dimension,dimension));
-		
-		frame.add(activeButton);
-		
-		return activeButton;
-	}
-	
-	private void makeFrameFullSize(JFrame aFrame)
-	{
-	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	    
-	    aFrame.setSize(screenSize.width, screenSize.height);
-	}
-	
 	public void ActivateFavorites()
 	{
-		ButtonHandler handler = new ButtonHandler();
-		
 		JFrame frame = new JFrame("Gator Streaming");
 		
-		String[] favorites = user.retrieveFavorites();
+		frame.getContentPane().setBackground( Color.GREEN );
+		
+		ButtonHandler handler = new ButtonHandler();
+		
+		String[] favs = user.retrieveFavorites();
 		
 		frame.setLayout(new FlowLayout());
 		
 		JLabel caption;
 		
-		if(favorites[0].contains("null")){
+		if(favs[0]==null|| favs[0].contains("null")){
 			
 			caption= new JLabel("You don't have any movies in your favorites list");
 			
@@ -226,7 +211,7 @@ public class Gui{
 			frame.setVisible(true);
 		}else{
 			
-			movies = createButtonArray(favorites);
+			movies = createButtonArray(favs);
 			
 			JButton button;
 			
@@ -261,9 +246,11 @@ public class Gui{
 	
 	public void ActivatePreviouslyWatched()
 	{
-		ButtonHandler handler = new ButtonHandler();
-		
 		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.getContentPane().setBackground( Color.GREEN );
+		
+		ButtonHandler handler = new ButtonHandler();
 		
 		String[] recentlyWatched = user.retrieveRecents();
 		
@@ -271,8 +258,8 @@ public class Gui{
 		
 		JLabel caption;
 		
-		if(recentlyWatched[0].contains("null")){
-		
+		if(recentlyWatched[0]==null || recentlyWatched[0].contains("null")){
+			
 			caption= new JLabel("You haven't watched any movies yet");
 			
 			frame.add(caption);
@@ -324,9 +311,11 @@ public class Gui{
 	
 	public void ActivateGenre(String genre) 
 	{
-		ButtonHandler handler = new ButtonHandler();
-		
 		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.getContentPane().setBackground( Color.GREEN );
+		
+		ButtonHandler handler = new ButtonHandler();
 		
 		frame.setLayout(new FlowLayout());
 		
@@ -376,9 +365,11 @@ public class Gui{
 	}
 	
 	public void ActivateRFU() {
-		ButtonHandler handler = new ButtonHandler();
-		
 		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.getContentPane().setBackground( Color.GREEN );
+		
+		ButtonHandler handler = new ButtonHandler();
 		
 		frame.setLayout(new FlowLayout());
 		
@@ -475,9 +466,11 @@ public class Gui{
 	}
 	
 	public void ActivateRMN() {
-		ButtonHandler handler = new ButtonHandler();
-		
 		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.getContentPane().setBackground( Color.GREEN );
+		
+		ButtonHandler handler = new ButtonHandler();
 		
 		frame.setLayout(new FlowLayout());
 		
@@ -540,10 +533,17 @@ public class Gui{
 	
 	public JButton[] createButtonArray(String[] input) {
 		
-		JButton[] Buttons = new JButton[input.length];
+		JButton[] Buttons;
+		
+		int count = 0;
 		
         for(int i = 0; i < input.length; i++)
-            Buttons[i] = new JButton(input[i]);
+        	if(input[i]==null||input[i].contains("null")) count++;
+        
+        Buttons = new JButton[input.length-count];
+        
+        for(int i = 0; i < input.length-count; i++)
+        	Buttons[i] = new JButton(input[i]);
         
         return Buttons;
     }
@@ -583,25 +583,37 @@ public class Gui{
 		return allMovies[0];
 	}
 	
-	public void changeFont(JLabel label)
+	public JButton addButton(Icon img,String imgTitle,JFrame frame)
+	{	
+		activeButton = new JButton(img);
+		
+		buttonLabel = new JLabel(imgTitle);
+		
+		activeButton.setPreferredSize(new Dimension(290, 290));
+		
+		frame.add(buttonLabel);
+		
+		frame.add(activeButton);
+		
+		return activeButton;
+	}
+	
+	public JButton addButton(String caption,int dimension,JFrame frame)
 	{
-		Font labelFont = label.getFont();
-		String labelText = label.getText();
-
-		int stringWidth = label.getFontMetrics(labelFont).stringWidth(labelText);
-		int componentWidth = label.getWidth();
-
-		// Find out how much the font can grow in width.
-		double widthRatio = (double)componentWidth / (double)stringWidth;
-
-		int newFontSize = (int)(labelFont.getSize() * widthRatio);
-		int componentHeight = label.getHeight();
-
-		// Pick a new font size so it will not be larger than the height of label.
-		int fontSizeToUse = Math.min(newFontSize, componentHeight);
-
-		// Set the label's font size to the newly determined size.
-		label.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
+		activeButton = new JButton(caption);
+		
+		activeButton.setPreferredSize(new Dimension(dimension,dimension-100));
+		
+		frame.add(activeButton);
+		
+		return activeButton;
+	}
+	
+	private void makeFrameFullSize(JFrame aFrame)
+	{
+	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    
+	    aFrame.setSize(screenSize.width, screenSize.height);
 	}
 	
 	private class ButtonHandler implements ActionListener{
@@ -618,6 +630,15 @@ public class Gui{
 			else if(event.getSource()==RFU) ActivateRFU();
 			else if(event.getSource()==RMN) ActivateRMN();
 			else if(event.getSource()==randomMovie) ActivateWatchMovie(randomMovie.getText());
+			else if(event.getSource()==addToFavs) {
+				if(count == 0) {
+					user.addMovieToDb(currentMovie,"favorites");
+					ActivateHome();
+					count++;
+				}else {
+					count=0;
+				}
+			}
 			if(movies!=null) 
 				for(int i =0;i<movies.length;i++)
 				{
