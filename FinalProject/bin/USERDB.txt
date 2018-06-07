@@ -1,0 +1,5 @@
+username abshir24
+password password
+genres [1, 2, 3, 4]
+favorites [The Bourne Identity, Saw, The Strangers, The Notebook, Gone with the Wind]
+watched [The Bourne Identity, Saw, The Strangers, The Notebook, Gone with the Wind]

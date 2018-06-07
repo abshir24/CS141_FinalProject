@@ -1,0 +1,10 @@
+username abshir24
+password password
+genres [1, 2, 3, 4]
+favorites [I know what you did Last Summer, Terminator 2, Night of the Living Dead, The Dark Knight, The Shining]
+watched [I know what you did Last Summer, Terminator 2, Night of the Living Dead, The Dark Knight, The Shining]
+username cool5
+password password
+genres [1, 2, 3, 4]
+favorites [The Dark Knight, P.S. I Love You, Guardians of the Galaxy, Shrek, null]
+watched [The Dark Knight, P.S. I Love You, Guardians of the Galaxy, Shrek, null]

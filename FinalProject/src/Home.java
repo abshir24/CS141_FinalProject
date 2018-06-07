@@ -1,7 +1,12 @@
 import java.util.*;
 import java.awt.event.ActionListener;
 import java.io.*;
-public class Program{
+
+//This is a mini streaming application that has a login-registration feature, a Gui, a favoriting system and a select by genre system
+//This app just doesn't stream movies
+//This home class handles a lot of the login and registration functionality as well as being the anchor for the whole program with most of the 
+//Functional methods being implemented in this class
+public class Home{
 	private static User loggedUser;
 	
 	private static User[] allUsers;
@@ -10,12 +15,14 @@ public class Program{
 	
 	private static Gui gui;
 	
+	private static ArrayList<String> usernames = new ArrayList<String>();
+	
 	public static void main(String[] args)throws FileNotFoundException
 	{
+		System.out.println("Home");
+		File userFile = new File("src/USERDB.txt");
 		
-		File userFile = new File("src/practice.txt");
-		
-		File moviesFile = new File("src/movies.txt");
+		File moviesFile = new File("src/MOVIEDB.txt");
 	
 		Scanner fileScanner = new Scanner(userFile);
 	
@@ -53,17 +60,20 @@ public class Program{
 		
 	}
 	
-	
+	//Retrieves the current user that's logged in
 	public static User retrieveUser()
 	{
 		return loggedUser;
 	}
 	
+	//Retrieves the allMovies array for other classes to use
 	public static Movie[] retrieveMovies()
 	{
 		return allMovies;
 	}
 	
+	
+	//Retrieves all movies from the data base and stores then into an array of movie objects after the movies get turned into objects
 	public static Movie[] retrieveMoviesFromDB(Scanner file,Movie[] allMovies)
 	{
 		int idx=0,rating=0;
@@ -106,7 +116,7 @@ public class Program{
 	}
 	
 	
-	//Login function
+	//Login function logs user in.
 	
 	public static void Login(Scanner userinput)
 	{
@@ -134,10 +144,12 @@ public class Program{
 	}
 	
 	
+	//Register function register's user and sends data to text file
+	
 	public static void Register(Scanner userinput)throws FileNotFoundException
 	{
 		
-		File file = new File("src/practice.txt");
+		File file = new File("src/USERDB.txt");
 		
 		int[]genres; String[] favs = new String[5]; String[] recents = new String[5];
 		
@@ -186,13 +198,15 @@ public class Program{
 		  }
 	}
 	
+	
+	//Finds specfic user in user data base and return the number that users line is on
 	public static int findUserInTxt(String input) 
 	{
 		
 		int count = 0;
 		
 		try {
-			File userFile = new File("src/practice.txt");
+			File userFile = new File("src/USERDB.txt");
 			
 			Scanner file = new Scanner(userFile);
 			
@@ -221,12 +235,15 @@ public class Program{
 		return count;
 	}
 	
+	
+	//Finds specfic line in user data base and return the number that line is on
+	
 	public static int findLineInTxt(String input,int start)
 	{
 		int count = 0; 
 		
 		try {
-			File userFile = new File("src/practice.txt");
+			File userFile = new File("src/USERDB.txt");
 			
 			Scanner file = new Scanner(userFile);
 			
@@ -534,11 +551,15 @@ public class Program{
 		{
 			System.out.println("User name is already taken!");
 			
-			//If the username is taken then the funciton will run again
+			//If the username is taken then the function will run again
 			
 			promptUserName(input);
 		}
-			
+		
+		usernames.add(answer);
+		
+		answer = usernames.get(0);
+					
 		return answer;
 	}
 	
@@ -562,8 +583,11 @@ public class Program{
 			promptUserNameLogin(input,attempts++);
 
 		}
-		
 		//returns username
+		
+		usernames.add(answer);
+		
+		answer = usernames.get(0);
 		
 		return answer;
 	}
@@ -574,7 +598,7 @@ public class Program{
 		System.out.println("Type a password, (no spaces)");
 		
 		String password = input.next().toLowerCase();
-		
+	
 		return password;
 		
 	}
@@ -629,6 +653,7 @@ public class Program{
 		return genres;
 	}
 	
+	//removes all of the front spaces from a string
 	public static String removeFrontSpaces(String str)
 	{
 		String returnString = "";
@@ -641,6 +666,4 @@ public class Program{
 		
 		return returnString;
 	}
-	
 }
-

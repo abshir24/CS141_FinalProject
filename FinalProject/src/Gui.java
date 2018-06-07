@@ -1,3 +1,5 @@
+// This gui class handles the graphical user interface portion of the website
+
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
@@ -28,13 +30,15 @@ public class Gui{
 	
 	private int count = 0;
 
+	//Constructor retrieves the current logged in user and the movies database
 	public Gui()
 	{	
-		user = Program.retrieveUser();
+		user = Home.retrieveUser();
 		
-		allMovies = Program.retrieveMovies();
+		allMovies = Home.retrieveMovies();
 	}
 	
+	//This function activates the home page of the gui
 	public void ActivateHome()
 	{
 		JFrame frame = new JFrame("Gator Streaming");
@@ -53,7 +57,7 @@ public class Gui{
 		
 		frame.add(title);
 		
-		previouslyWatched = addButton("Previously Watched",350,frame);
+		previouslyWatched = addButton("Recently Watched",350,frame);
 		
 		previouslyWatched.addActionListener(handler);
 		
@@ -81,6 +85,9 @@ public class Gui{
 		
 		return;
 	}
+	
+	
+	//Activates the Movie Watching page of the gui after a specific movie is clicked on
 	
 	public void ActivateWatchMovie(String movieTitle)
 	{
@@ -128,6 +135,10 @@ public class Gui{
 		
 		
 	}
+	
+	//Activates the genre selection portion of the gui
+	//The user is given the option of selecting between 4 different genres
+	//After a genres is selected 25 movies for that specific genre are displayed.
 	
 	public void ActivateGenreSelection()
 	{
@@ -178,6 +189,8 @@ public class Gui{
 		return;
 	}
 	
+	
+	//Activates the favorites page where the users favorite movies are displayed
 	public void ActivateFavorites()
 	{
 		JFrame frame = new JFrame("Gator Streaming");
@@ -243,6 +256,7 @@ public class Gui{
 		
 	}
 	
+	//Activates the recently watched where the users recently watched movies are displayed
 	
 	public void ActivatePreviouslyWatched()
 	{
@@ -309,6 +323,9 @@ public class Gui{
 		
 	}
 	
+	
+	//Activates a page with 25 movies for the selected genre
+	
 	public void ActivateGenre(String genre) 
 	{
 		JFrame frame = new JFrame("Gator Streaming");
@@ -363,6 +380,10 @@ public class Gui{
 		return;
 		
 	}
+	
+	
+	//Activates the recommended for you page where the user's selection of favorite genres get matched
+	//up with the movies in the database.
 	
 	public void ActivateRFU() {
 		JFrame frame = new JFrame("Gator Streaming");
@@ -465,6 +486,8 @@ public class Gui{
 		
 	}
 	
+	
+	//Activates the Random movie page where a random movie gets selected from the DB and displayed on the page
 	public void ActivateRMN() {
 		JFrame frame = new JFrame("Gator Streaming");
 		
@@ -502,7 +525,7 @@ public class Gui{
 	}
 	
 	
-
+	//Adds movie titles to a display array based on specific genres in the db
 	public void displayMovies(String[] displayArray,int currentIdx,String genre,int endIdx,int startIdx)
 	{
 		while(currentIdx<endIdx)
@@ -511,6 +534,9 @@ public class Gui{
 		}
 		
 	}
+	
+	
+	//Retrieves the start point for movies in the database. Action movies start at idx 0 etc.
 	
 	public int retrieveStartIdx(String genre)
 	{
@@ -531,6 +557,9 @@ public class Gui{
 		} 
 	}
 	
+	
+	//Creates an array of buttons that are used to  display on the interface one called on.
+	
 	public JButton[] createButtonArray(String[] input) {
 		
 		JButton[] Buttons;
@@ -548,6 +577,8 @@ public class Gui{
         return Buttons;
     }
 	
+	
+	//Retrieves genre number and turns it into a string. 1 = Action etc.
 	public String[] genresToString()
 	{
 		int[] genres = user.retrieveGenres();
@@ -575,6 +606,7 @@ public class Gui{
 		return returnArr;
 	}
 	
+	//Finds specific movie in database
 	public Movie findMovie(String title)
 	{
 		for(int i = 0;i<allMovies.length;i++)
@@ -583,6 +615,7 @@ public class Gui{
 		return allMovies[0];
 	}
 	
+	//Adds button to frame
 	public JButton addButton(Icon img,String imgTitle,JFrame frame)
 	{	
 		activeButton = new JButton(img);
@@ -598,6 +631,7 @@ public class Gui{
 		return activeButton;
 	}
 	
+	//Adds button to frame
 	public JButton addButton(String caption,int dimension,JFrame frame)
 	{
 		activeButton = new JButton(caption);
@@ -609,6 +643,7 @@ public class Gui{
 		return activeButton;
 	}
 	
+	//Makes frame full size
 	private void makeFrameFullSize(JFrame aFrame)
 	{
 	    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -616,6 +651,8 @@ public class Gui{
 	    aFrame.setSize(screenSize.width, screenSize.height);
 	}
 	
+	
+	//Event handler class that handles the button clicks for every button in the application.
 	private class ButtonHandler implements ActionListener{
 		public void actionPerformed(ActionEvent event){
 			if(event.getSource()==Back) ActivateHome();

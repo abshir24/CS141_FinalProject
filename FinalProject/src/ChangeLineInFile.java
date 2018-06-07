@@ -3,6 +3,8 @@ import java.util.Arrays;
 
 public class ChangeLineInFile {
 
+	
+//Final method that adds that data to file
 public void changeALineInATextFile(String fileName, String newLine, int lineNumber) {
         String content = new String();
         String editedContent = new String();
@@ -12,6 +14,8 @@ public void changeALineInATextFile(String fileName, String newLine, int lineNumb
 
 }
 
+
+//This method counts the number of lines in the text file
 private static int numberOfLinesInFile(String content) {
     int numberOfLines = 0;
     int index = 0;
@@ -36,6 +40,9 @@ private static int numberOfLinesInFile(String content) {
 
     return numberOfLines;
 }
+
+
+//Turns the file into an array of strings each index is a line in the file
 
 private static String[] turnFileIntoArrayOfStrings(String content, int lines) {
     String[] array = new String[lines];
@@ -78,6 +85,7 @@ private static String[] turnFileIntoArrayOfStrings(String content, int lines) {
     return array;
 }
 
+//Replaces selected line with the data that the user wants to replace with
 private static String editLineInContent(String content, String newLine, int line) {
 
     int lineNumber = 0;
@@ -100,7 +108,7 @@ private static String editLineInContent(String content, String newLine, int line
     return content;
 }
 
-
+//Writes that replaced data back to the file
 private static void writeToFile(String file, String content) {
 
     try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"))) {
@@ -117,6 +125,7 @@ private static void writeToFile(String file, String content) {
     }
 }
 
+//Reads the data in the file
 private static String readFile(String filename) {
     String content = null;
     File file = new File(filename);

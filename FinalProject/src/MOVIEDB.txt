@@ -1,0 +1,125 @@
+ma [Die Hard] 1
+ma [The Dark Knight] 1
+ma [Terminator 2] 1
+ma [Raiders of the Lost Ark] 1
+ma [The Matrix] 1
+ma [Mad Max: Fury Road] 1
+ma [Marvels Avengers Infinity War] 1
+ma [The Bourne Identity] 1
+ma [James Bond Casino Royale] 1
+ma [Star Wars] 1
+ma [Speed] 1
+ma [Lethal Weapon] 1
+ma [Gladiator] 1
+ma [The Rock] 1
+ma [Jurassic Park] 1
+ma [The Fugitive] 1
+ma [Saving Private Ryan] 1
+ma [Inception] 1
+ma [Face Off] 1
+ma [Goldfinger] 1
+ma [300] 1
+ma [Looper] 1
+ma [Iron Man] 1
+ma [Con Air] 1
+ma [Guardians of the Galaxy] 1
+mr [Titanic] 1
+mr [The Notebook] 1
+mr [Gone with the Wind] 1
+mr [Pretty Woman] 1
+mr [Love Actually] 1
+mr [Say Anything] 1
+mr [Sleepless in Seattle] 1
+mr [A Walk to Remember] 1
+mr [Notting Hill] 1
+mr [Dirty Dancing] 1
+mr [P.S. I Love You] 1
+mr [City of Angels] 1
+mr [Dear John] 1
+mr [When Harry Met Sally] 1
+mr [Ghost] 1
+mr [The Proposal] 1
+mr [10 Things I Hate About You] 1
+mr [The Princess Bride] 1
+mr [An Officer and a Gentleman] 1
+mr [The Wedding Singer] 1
+mr [Crazy, Stupid, Love] 1
+mr [Roman Holiday] 1
+mr [City Lights] 1
+mr [The Shop Around the Corner] 1
+mr [Silver Linings Playbook] 1
+mh [Halloween (1978)] 1
+mh [I know what you did Last Summer] 1
+mh [Freddie vs. Jason] 1
+mh [The Exorcist] 1
+mh [The Texas Chainsaw Massacre (1974)] 1
+mh [Psycho] 1
+mh [The Shining] 1
+mh [Alien] 1
+mh [Night of the Living Dead] 1
+mh [A Nightmare on Elm Street] 1
+mh [28 Days Later] 1
+mh [Paranormal Activity (1)] 1
+mh [Silence of the Lambs] 1
+mh [Scream (1)] 1
+mh [Scream (2)] 1
+mh [The Conjuring] 1
+mh [The Cabin in the Woods] 1
+mh [The Thing (1982)] 1
+mh [The Ring] 1
+mh [The Descent] 1
+mh [The Blair Witch Project] 1
+mh [Get Out] 1
+mh [It] 1
+mh [Saw] 1
+mh [The Strangers] 1
+mc [Aladdin] 1
+mc [Lion King] 1
+mc [Little Mermaid] 1
+mc [Bambi] 1
+mc [Cinderella] 1
+mc [Sleeping Beauty] 1
+mc [Snow White] 1
+mc [Mary Poppins] 1
+mc [Cars] 1
+mc [Toy Story] 1
+mc [Shrek] 1
+mc [Finding Nemo] 1
+mc [Frozen] 1
+mc [Alice in Wonderland] 1
+mc [Inside Out] 1
+mc [The Karate Kid] 1
+mc [E.T.] 1
+mc [The Goonies] 1
+mc [Home Alone] 1
+mc [Monsters Inc.] 1
+mc [Walle] 1
+mc [Despicable Me] 1
+mc [Harry Potter] 1
+mc [Tangled] 1
+mc [Hook] 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
