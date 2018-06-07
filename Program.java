@@ -1,17 +1,19 @@
 import java.util.*;
+import java.awt.event.ActionListener;
 import java.io.*;
-public class Program {
+public class Program extends FileNotFoundException{
 	private static User loggedUser;
 	
 	private static User[] allUsers;
 	
 	private static Movie[] allMovies = new Movie[100];
 	
+
+	
+	private static Scanner fileScan = new Scanner(new File("src/practice.txt"));
 	
 	public static void main(String[] args)throws FileNotFoundException
 	{
-		int cool = User.returnIdx();
-		
 		Gui gui;
 		
 		File userFile = new File("src/practice.txt");
@@ -26,7 +28,9 @@ public class Program {
 		
 		allUsers = retrieveUsers(fileScanner,allUsers);
 		
-		System.out.println("Length "+ allUsers.length);
+		int cool = findUserInTxt("abshir24");
+		
+		System.out.println(findLineInTxt("favorites",cool));
 
 		fileScanner = new Scanner(moviesFile);
 		
@@ -189,6 +193,62 @@ public class Program {
 		  }
 	}
 	
+	public static int findUserInTxt(String input) throws FileNotFoundException
+	{
+		Scanner file = new Scanner( new File("src/practice.txt"));
+		int count = 0;
+		while(file.hasNextLine())
+		{
+			count++;
+			
+			String data = file.nextLine();
+			
+			Scanner line = new Scanner(data);
+			
+			if(!line.hasNext()) continue;
+			
+			String row = line.next();
+			
+			if(row.equals(input)) return count;
+			
+			String arrayString = "";
+			
+			if(data.contains(input))  return count;
+			
+		}
+		
+		file = new Scanner( new File("src/practice.txt"));
+		
+		return count;
+	}
+	
+	public static int findLineInTxt(String input,int start) throws FileNotFoundException
+	{
+		Scanner file = new Scanner( new File("src/practice.txt"));
+		int count = 0; 
+		while(file.hasNextLine())
+		{
+			count++;
+			
+			String data = file.nextLine();
+			
+			Scanner line = new Scanner(data);
+			
+			if(!line.hasNext()) continue;
+			
+			String row = line.next();
+			
+			if(count>start)
+			{
+				if(row.equals(input)) return count;
+			}
+			
+		}
+		
+		file = new Scanner( new File("src/practice.txt"));
+		
+		return count;
+	}
 	//reverses array.
 	public static void reverseArr(int[]arr)
 	{

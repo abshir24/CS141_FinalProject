@@ -21,10 +21,10 @@ public class Gui{
 	private Button GenreSelection = new Button("Back to Genre Selection");
 	private User user;
 	private Movie[] allMovies;
-	private JButton[] temp;
-	String currentMovie;
-	int counter;
-	
+	private JButton[] movies;
+	private JButton randomMovie;
+	private String currentMovie;
+
 	public Gui()
 	{	
 		user = Program.retrieveUser();
@@ -69,6 +69,49 @@ public class Gui{
 		
 		return;
 	}
+	
+	public void ActivateWatchMovie(String movieTitle) throws FileNotFoundException
+	{
+		currentMovie = movieTitle;
+		
+		Movie movie = findMovie(movieTitle);
+		
+		user.addMovieToDb(movieTitle,"recents");
+		
+		String fullTitle = "Now Watching: " + movie.retrieveTitle() + "( " + movie.retrieveGenre() +" )";
+		
+		ButtonHandler handler = new ButtonHandler();
+		
+		JFrame frame = new JFrame("Gator Streaming");
+		
+		frame.setLayout(new FlowLayout());
+		
+		frame.getContentPane().setBackground( Color.BLACK );
+		
+		JLabel title = new JLabel(fullTitle);
+		
+		title.setFont(new Font("Serif", Font.PLAIN, 75));
+		
+		title.setForeground(Color.WHITE);
+		
+		frame.add(title);
+		
+		Back.setPreferredSize(new Dimension(150,150));
+		
+		Back.addActionListener(handler);
+		
+		frame.add(Back);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		makeFrameFullSize(frame);
+		
+		frame.setVisible(true);
+		
+		
+	}
+	
+	
 	
 	
 	
@@ -183,9 +226,7 @@ public class Gui{
 			frame.setVisible(true);
 		}else{
 			
-			JButton[] movies = createButtonArray(favorites);
-			
-			temp = movies;
+			movies = createButtonArray(favorites);
 			
 			JButton button;
 			
@@ -193,32 +234,11 @@ public class Gui{
 				
 				button = movies[i];
 				
-				currentMovie = button.getText();
-				
 				button.setPreferredSize(new Dimension(200,150));
 				
-				button.addActionListener(
-				  new ActionListener() {
-				    public void actionPerformed(ActionEvent e) {
-//				      System.out.println(currentMovie);
-				    }
-				  }
-				);
+				button.addActionListener(handler);
 				
-				counter = i;
-								
-				currentMovie = movies[i].getText();
-				
-				movies[i].setPreferredSize(new Dimension(200,150));
-				
-				temp[counter].addActionListener(
-				  new ActionListener() {
-				    public void actionPerformed(ActionEvent e) {
-				    	System.out.println(temp[counter].getText());
-				    }
-				  }
-				);
-				frame.add(movies[i]);
+				frame.add(button);
 			}
 			
 			Back.setPreferredSize(new Dimension(150,150));
@@ -270,7 +290,7 @@ public class Gui{
 			frame.setVisible(true);
 		}else{
 			
-			JButton[] movies = createButtonArray(recentlyWatched);
+			movies = createButtonArray(recentlyWatched);
 			
 			JButton button;
 			
@@ -279,6 +299,8 @@ public class Gui{
 				button = movies[i];
 				
 				button.setPreferredSize(new Dimension(200,150));
+				
+				button.addActionListener(handler);
 				
 				frame.add(button);
 			}
@@ -322,7 +344,7 @@ public class Gui{
 		}
 		
 		
-		JButton[] movies = createButtonArray(displayArray);
+		movies = createButtonArray(displayArray);
 		
 		JButton button;
 		
@@ -331,6 +353,8 @@ public class Gui{
 			button = movies[i];
 			
 			button.setPreferredSize(new Dimension(200,150));
+			
+			button.addActionListener(handler);
 			
 			frame.add(button);
 		}
@@ -419,7 +443,7 @@ public class Gui{
 				
 		}
 		
-		JButton[] movies = createButtonArray(displayArray);
+		movies = createButtonArray(displayArray);
 		
 		JButton button;
 		
@@ -428,6 +452,8 @@ public class Gui{
 			button = movies[i];
 			
 			button.setPreferredSize(new Dimension(200,150));
+			
+			button.addActionListener(handler);
 			
 			frame.add(button);
 		}
@@ -459,11 +485,12 @@ public class Gui{
 		
 		String title = allMovies[rand.nextInt(100)+1].retrieveTitle();
 		
-		Button button = new Button(title);
+		randomMovie= new JButton(title);
 		
-		button.setPreferredSize(new Dimension(300,300));
+		randomMovie.setPreferredSize(new Dimension(300,300));
 		
-		frame.add(button);
+		randomMovie.addActionListener(handler);
+		frame.add(randomMovie);
 		
 		Back.setPreferredSize(new Dimension(150,150));
 		
@@ -548,9 +575,37 @@ public class Gui{
 		return returnArr;
 	}
 	
+	public Movie findMovie(String title)
+	{
+		for(int i = 0;i<allMovies.length;i++)
+			if(allMovies[i].retrieveTitle().contains(title)) return allMovies[i];
+		
+		return allMovies[0];
+	}
+	
+	public void changeFont(JLabel label)
+	{
+		Font labelFont = label.getFont();
+		String labelText = label.getText();
+
+		int stringWidth = label.getFontMetrics(labelFont).stringWidth(labelText);
+		int componentWidth = label.getWidth();
+
+		// Find out how much the font can grow in width.
+		double widthRatio = (double)componentWidth / (double)stringWidth;
+
+		int newFontSize = (int)(labelFont.getSize() * widthRatio);
+		int componentHeight = label.getHeight();
+
+		// Pick a new font size so it will not be larger than the height of label.
+		int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
+		// Set the label's font size to the newly determined size.
+		label.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
+	}
 	
 	private class ButtonHandler implements ActionListener{
-		public void actionPerformed(ActionEvent event) {
+		public void actionPerformed(ActionEvent event){
 			if(event.getSource()==Back) ActivateHome();
 			else if(event.getSource()==GenreSelection) ActivateGenreSelection();
 			else if(event.getSource()==previouslyWatched) ActivatePreviouslyWatched();
@@ -562,6 +617,16 @@ public class Gui{
 			else if(event.getSource()==Romance) ActivateGenre("Romance");
 			else if(event.getSource()==RFU) ActivateRFU();
 			else if(event.getSource()==RMN) ActivateRMN();
+			else if(event.getSource()==randomMovie) ActivateWatchMovie(randomMovie.getText());
+			if(movies!=null) 
+				for(int i =0;i<movies.length;i++)
+				{
+					if(event.getSource()==movies[i]) {
+						ActivateWatchMovie(movies[i].getText());
+						return;
+					}
+						
+				}
 		}
 	}
 }
